@@ -5,4 +5,4 @@
 
 ## My 'to do list' project. There you can add todolists, tasks and edit description.
 
-You can test this    https://rendow.github.io/TodoList/
+You can try it  https://rendow.github.io/TodoList/
