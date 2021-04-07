@@ -1,6 +1,6 @@
-import React, {useState, KeyboardEvent, ChangeEvent} from "react";
-import {Button, IconButton, TextField} from "@material-ui/core";
-import {Add, Delete} from "@material-ui/icons";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {IconButton, TextField} from "@material-ui/core";
+import {Add} from "@material-ui/icons";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void

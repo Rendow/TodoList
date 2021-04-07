@@ -39,6 +39,7 @@ function TodoList(props: TodoListPropsType) {
             <AddItemForm addItem={addTask}/>
 
             <ul style={{listStyle: 'none', paddingLeft: '0'}}>
+
                 {
                     props.tasks.map(task => {
 
@@ -92,6 +93,7 @@ function TodoList(props: TodoListPropsType) {
             </div>
         </div>
     )
+
 }
 
 export default TodoList;
