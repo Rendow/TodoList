@@ -37,27 +37,27 @@ let dispatch = useDispatch()
     const removeTask = useCallback((taskID: string, todoListID: string) => {
        let action =  removeTaskAC(taskID, todoListID)
         dispatch(action)
-    },[])
+    },[dispatch])
 
     const addTask = useCallback((title: string, todoListID: string) => {
         let action =  addTaskAC(title, todoListID)
         dispatch(action)
-    },[])
+    },[dispatch])
 
     const changeTaskStatus = useCallback((taskID: string, newIsDoneValue: boolean, todoListID: string) => {
         let action =  changeTaskStatusAC(taskID,newIsDoneValue, todoListID)
         dispatch(action)
-    },[])
+    },[dispatch])
     const changeTaskTitle = useCallback((taskID: string, newTitle: string, todoListID: string) => {
         let action =  changeTaskTitleAC(taskID,newTitle, todoListID)
         dispatch(action)
-    },[])
+    },[dispatch])
 
 
     const changeFilter = useCallback((newFilterValue: FilterValuesType, todoListID: string) => {
         let action =  ChangeTodoListFilterAC(todoListID,newFilterValue)
         dispatch(action)
-    },[])
+    },[dispatch])
 
     const changeTodolistTitleFilter = useCallback((newTitle: string, todoListID: string)=> {
         let action =  ChangeTodoListAC(newTitle,todoListID)

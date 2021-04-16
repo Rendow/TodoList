@@ -19,14 +19,14 @@ export type TodoListPropsType = {
     removeTodolist: (todoListID: string) => void
 }
 
-export const TodoList = React.memo((props: TodoListPropsType) => {
+export const TodoList = React.memo(({todoListid,title, ...props}: TodoListPropsType) => {
 
-    const addTask = useCallback((title: string) => props.addTask(title, props.todoListid),[])
-    const onAllClickHandler = useCallback(() => props.changeTodoListFilter('all', props.todoListid),[])
-    const onActiveClickHandler = useCallback(() => props.changeTodoListFilter('active', props.todoListid),[])
-    const onCompletedClickHandler = useCallback(() => props.changeTodoListFilter('completed', props.todoListid),[])
-    const removeTodoList = useCallback(() => props.removeTodolist(props.todoListid),[])
-    const changeTodolistTitle = useCallback((title:string) => props.changeTodolistTitleFilter(title, props.todoListid),[])
+    const addTask = useCallback((title: string) => props.addTask(title, todoListid),[todoListid,props.addTask])
+    const onAllClickHandler = useCallback(() => props.changeTodoListFilter('all', todoListid),[todoListid])
+    const onActiveClickHandler = useCallback(() => props.changeTodoListFilter('active', todoListid),[todoListid])
+    const onCompletedClickHandler = useCallback(() => props.changeTodoListFilter('completed',todoListid),[todoListid])
+    const removeTodoList = useCallback(() => props.removeTodolist(todoListid),[])
+    const changeTodolistTitle = useCallback((title:string) => props.changeTodolistTitleFilter(title, todoListid),[props.changeTodolistTitleFilter,todoListid])
 
     let allTodoListTasks = props.tasks
     let tasksForTodolists = allTodoListTasks
@@ -41,7 +41,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
         <div>
             <h3>
 
-                <EditableSpan title={props.title} changeTaskTitle={changeTodolistTitle}/>
+                <EditableSpan title={title} changeTaskTitle={changeTodolistTitle}/>
 
                 <IconButton onClick={removeTodoList} > <Delete/> </IconButton>
             </h3>
@@ -53,11 +53,11 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
                 {
                     props.tasks.map(task => {
 
-                        const onClickHandler = useCallback(() => props.removeTasks(task.id, props.todoListid),[])
+                        const onClickHandler = useCallback(() => props.removeTasks(task.id, todoListid),[])
                         const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) =>
-                            props.changeTaskStatus(task.id, e.currentTarget.checked, props.todoListid),[])
+                            props.changeTaskStatus(task.id, e.currentTarget.checked, todoListid),[])
                         const changeTaskTitle = useCallback((newTitle:string) =>
-                            props.changeTaskTitle(task.id, newTitle,props.todoListid),[])
+                            props.changeTaskTitle(task.id, newTitle,todoListid),[])
 
                         return (
                             <li key={task.id} className={task.isDone ? 'is-done' : ''}>
