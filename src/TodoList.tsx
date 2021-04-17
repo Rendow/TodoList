@@ -1,9 +1,10 @@
-import React, {ChangeEvent, useCallback} from "react";
+import React, {useCallback} from "react";
 import {FilterValuesType, TaskType} from "./App";
 import {AddItemForm} from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {Task} from "./Task";
 
 export type TodoListPropsType = {
     todoListid: string
@@ -25,18 +26,25 @@ export const TodoList = React.memo(({todoListid,title, ...props}: TodoListPropsT
     const onAllClickHandler = useCallback(() => props.changeTodoListFilter('all', todoListid),[todoListid])
     const onActiveClickHandler = useCallback(() => props.changeTodoListFilter('active', todoListid),[todoListid])
     const onCompletedClickHandler = useCallback(() => props.changeTodoListFilter('completed',todoListid),[todoListid])
-    const removeTodoList = useCallback(() => props.removeTodolist(todoListid),[])
+    const removeTodoList = () => props.removeTodolist(todoListid)
     const changeTodolistTitle = useCallback((title:string) => props.changeTodolistTitleFilter(title, todoListid),[props.changeTodolistTitleFilter,todoListid])
 
-    let allTodoListTasks = props.tasks
-    let tasksForTodolists = allTodoListTasks
+    let allTodolistTasks = props.tasks;
+    let tasksForTodolist = allTodolistTasks;
 
     if (props.filter === 'active') {
-        tasksForTodolists = allTodoListTasks.filter(t => t.isDone === false)
+        tasksForTodolist = allTodolistTasks.filter(t => t.isDone === false)
     }
     if (props.filter === 'completed') {
-        tasksForTodolists = allTodoListTasks.filter(t => t.isDone === true)
+        tasksForTodolist = allTodolistTasks.filter(t => t.isDone === true)
     }
+
+    const onClickHandler = useCallback((id:string) => props.removeTasks(id, todoListid),[props.removeTasks,todoListid])
+
+    const changeTaskStatus = useCallback((id:string, isDone:boolean) => props.changeTaskStatus(id, isDone, todoListid),[props.changeTaskStatus,todoListid])
+
+    const changeTaskTitle = useCallback((id:string,newTitle:string) => props.changeTaskTitle(id, newTitle,todoListid),[props.changeTaskTitle,todoListid])
+
     return (
         <div>
             <h3>
@@ -51,26 +59,15 @@ export const TodoList = React.memo(({todoListid,title, ...props}: TodoListPropsT
             <ul style={{listStyle: 'none', paddingLeft: '0'}}>
 
                 {
-                    props.tasks.map(task => {
-
-                        const onClickHandler = useCallback(() => props.removeTasks(task.id, todoListid),[])
-                        const changeTaskStatus = useCallback((e: ChangeEvent<HTMLInputElement>) =>
-                            props.changeTaskStatus(task.id, e.currentTarget.checked, todoListid),[])
-                        const changeTaskTitle = useCallback((newTitle:string) =>
-                            props.changeTaskTitle(task.id, newTitle,todoListid),[])
+                    tasksForTodolist.map(task => {
 
                         return (
-                            <li key={task.id} className={task.isDone ? 'is-done' : ''}>
-                                <Checkbox
-                                    color={'secondary'}
-                                    checked={task.isDone}
-                                    onChange={changeTaskStatus}
-                                />
-
-
-                                <EditableSpan title={task.title} changeTaskTitle={changeTaskTitle}/>
-                                <IconButton onClick={onClickHandler} > <Delete/> </IconButton>
-                            </li>
+                            <Task
+                                key={task.id}
+                                task={task}
+                                removeTasks={onClickHandler}
+                                changeTaskStatus={changeTaskStatus}
+                                changeTaskTitle={changeTaskTitle}/>
                         )
                     })
                 }

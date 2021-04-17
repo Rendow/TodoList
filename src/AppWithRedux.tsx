@@ -62,17 +62,17 @@ let dispatch = useDispatch()
     const changeTodolistTitleFilter = useCallback((newTitle: string, todoListID: string)=> {
         let action =  ChangeTodoListAC(newTitle,todoListID)
         dispatch(action)
-    },[])
+    },[dispatch])
 
     const removeTodolist = useCallback((todoListID: string) =>{
         let action =  RemoveTodoListAC(todoListID)
         dispatch(action)
-    },[])
+    },[dispatch])
 
     const addTodoList = useCallback((title: string) => {
         let action =  AddTodoListAC(title)
         dispatch(action)
-    }, [])
+    }, [dispatch])
 
     // UI
     //crud - create,read,update,delete
