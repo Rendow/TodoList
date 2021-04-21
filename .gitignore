@@ -28,3 +28,9 @@ yarn-error.log*
 /~$аметки.docx
 /doc/~$dolist.docx
 /doc/
+/src/Task.stories.tsx
+/src/AddItemForm.stories.tsx
+/src/EditableSpan.stories.tsx
+/src/Task.stories.tsx
+/src/stories/Button.stories.tsx
+/src/stories/

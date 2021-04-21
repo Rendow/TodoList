@@ -26,8 +26,8 @@ export type ActionType = RemoveTodoListActionType | AddTodoListActionType | Chan
 
 
 
-export let todoListId1 = v1()
-export let todoListId2 = v1()
+export const todoListId1 = v1()
+export const todoListId2 = v1()
 
 let initialState: TodoListType[] = [
     {id: todoListId1, title: 'What to learn', filter: 'all'},

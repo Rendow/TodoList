@@ -97,8 +97,8 @@ let dispatch = useDispatch()
            </Grid>
 
                 <Grid container spacing={4}>
-            { todoLists.map(tl => {
 
+            { todoLists.map(tl => {
                     return (
                         <Grid item key={tl.id}>
                             <Paper elevation={5} style={{ padding: ' 20px'}}>
@@ -116,7 +116,6 @@ let dispatch = useDispatch()
                                 changeTodolistTitleFilter={changeTodolistTitleFilter}
                             />
                         </Paper></Grid>
-
                     )
                 }) }
             </Grid>
