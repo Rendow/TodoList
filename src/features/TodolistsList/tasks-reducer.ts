@@ -3,6 +3,7 @@ import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelTyp
 import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
 import {AppActionsType, setAppErrorAC, setAppStatusAC} from "../../api/app-reducer";
+import {AxiosError} from "axios";
 
 const initialState: TasksStateType = {}
 
@@ -71,11 +72,17 @@ export const removeTaskTC = (taskId: string, todolistId: string) => (dispatch: D
 
         })
 }
+
+enum ResultResponse {
+    succeeded,
+    failed,
+    captcha= 10,
+}
 export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC("loading"))
     todolistsAPI.createTask(todolistId, title)
         .then(res => {
-            if(res.data.resultCode === 0) {
+            if(res.data.resultCode === ResultResponse.succeeded) {
                 const task = res.data.data.item
                 const action = addTaskAC(task)
                 dispatch(action)
@@ -84,7 +91,12 @@ export const addTaskTC = (title: string, todolistId: string) => (dispatch: Dispa
             } else {
                 dispatch(setAppErrorAC(res.data.messages[0]))
                 dispatch(setAppStatusAC("failed"))
-            }
+            }}
+        )
+        .catch((err:AxiosError)=>{
+            dispatch(setAppErrorAC(err.message))
+            dispatch(setAppStatusAC("failed"))
+
         })
 }
 export const updateTaskTC = (taskId: string, domainModel: UpdateDomainTaskModelType, todolistId: string) =>

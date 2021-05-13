@@ -44,6 +44,7 @@ export const AddItemForm = React.memo(function(props: AddItemFormPropsType) {
                    onKeyPress={onKeyPressHandler}
                    label="Title"
                    helperText={error}
+                   disabled={props.entityStatus === 'loading'}
 
         />
         <IconButton color="primary" onClick={addItem} disabled={props.entityStatus === 'loading'}>
