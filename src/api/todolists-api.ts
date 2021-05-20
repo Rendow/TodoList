@@ -46,10 +46,21 @@ export type LoginParamsType = {
     rememberMe:boolean
     captcha?:string
 }
+export type MeParamsType = {
+    email:string
+    id:number
+    login:string
+}
 export const authAPI = {
     login(data:LoginParamsType) {
         return instance.post<ResponseType<{ userId: number }>>(`auth/login`, data);
-    }
+    },
+    me() {
+        return instance.get<ResponseType<MeParamsType>>(`auth/me`);
+    },
+    logout() {
+        return instance.delete<ResponseType>(`auth/login`);
+    },
 }
 
 

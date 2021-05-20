@@ -41,16 +41,16 @@ export const Login = () => {
         },
         onSubmit: values => {
             dispatch(loginTC(values))
-            alert(JSON.stringify(values));
             formik.resetForm();
         },
     })
 
-    return<>
-        {!isLoggedIn
-            ?
-        <Grid container justify="center">
-        <Grid item xs={4}>
+    if(isLoggedIn){
+      return  <Redirect to={'/'}/>
+    }
+
+    return <Grid container justify="center">
+           <Grid item xs={4}>
 
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
@@ -104,6 +104,5 @@ export const Login = () => {
             </form>
         </Grid>
     </Grid>
-            : <Redirect  to={ '/'}/> }
-    </>
+
 }
