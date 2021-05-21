@@ -1,0 +1,22 @@
+import React from 'react';
+import {Meta, Story} from '@storybook/react/types-6-0';
+import {action} from '@storybook/addon-actions';
+import {AddItemForm, AddItemFormPropsType} from '../components/AddItemForm/AddItemForm';
+
+export default {
+    title: 'Todolists/AddItemForm',
+    component: AddItemForm,
+    argTypes: {
+        onClick: {
+            description: 'AddItemFormExample clicked'
+        }
+    },
+} as Meta;
+
+const Template: Story<AddItemFormPropsType> = (args) => <AddItemForm {...args} />;
+
+export const AddItemFormExample = Template.bind({});
+AddItemFormExample.args = {
+    addItem:action('AddItemFormExample clicked')
+};
+
