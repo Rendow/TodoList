@@ -1,8 +1,8 @@
-import { Dispatch } from 'redux'
-import {setAppStatusAC } from '../../app/app-reducer'
-import {authAPI} from "../../api/todolists-api";
-import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {Dispatch} from 'redux'
+import {SetAppErrorActionType, setAppStatusAC, SetAppStatusActionType} from '../../app/app-reducer'
+import {authAPI, LoginParamsType} from '../../api/todolists-api'
+import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 const initialState = {
     isLoggedIn: false
@@ -10,12 +10,12 @@ const initialState = {
 
 //замена authReducer от redux-toolkit
 const slice = createSlice({
-    name:'auth',
-    initialState:initialState,
+    name: 'auth',
+    initialState: initialState,
 
     //state тут - 'черновик' стейта, предоставленный immerjs.
     reducers: {
-        setIsLoggedInAC(state, action:PayloadAction<{value:boolean}>){
+        setIsLoggedInAC(state, action: PayloadAction<{value: boolean}>) {
             state.isLoggedIn = action.payload.value
         }
     }
@@ -24,41 +24,36 @@ const slice = createSlice({
 export const authReducer = slice.reducer
 export const {setIsLoggedInAC} = slice.actions
 
-type RequestType = {
-    email:string
-    password: string
-    rememberMe: boolean
-}
-export const loginTC = (data: RequestType) => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC({value:'loading'}))
+export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.login(data)
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: true}))
-                dispatch(setAppStatusAC({value: 'succeeded'}))
-
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
-                handleServerAppError(res.data, dispatch);
+                handleServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
-     })
-
+        })
 }
+
 export const logoutTC = () => (dispatch: Dispatch) => {
-    dispatch(setAppStatusAC({value:'loading'}))
+    dispatch(setAppStatusAC({status: 'loading'}))
     authAPI.logout()
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(setIsLoggedInAC({value: false}))
-                dispatch(setAppStatusAC({value:'succeeded'}))
+                dispatch(setAppStatusAC({status: 'succeeded'}))
             } else {
-                handleServerAppError(res.data, dispatch);
+                handleServerAppError(res.data, dispatch)
             }
         })
         .catch((error) => {
             handleServerNetworkError(error, dispatch)
         })
 }
+
 

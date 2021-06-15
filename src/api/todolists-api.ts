@@ -1,14 +1,17 @@
 import axios from 'axios'
 
-const instance = axios.create({
-    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+const settings = {
     withCredentials: true,
     headers: {
         'API-KEY': '7e928b19-02e3-4839-a906-80cc9541b152'
     }
+}
+const instance = axios.create({
+    baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+    ...settings
 })
 
-// api
+
 export const todolistsAPI = {
     getTodolists() {
         const promise = instance.get<TodolistType[]>('todo-lists');
@@ -33,38 +36,37 @@ export const todolistsAPI = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
     },
     createTask(todolistId: string, taskTitile: string) {
-        return instance.post<ResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`, {title: taskTitile});
+        return instance.post<ResponseType<{ item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: taskTitile});
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
     }
 }
 
+
 export type LoginParamsType = {
-    email:string
-    password:string
-    rememberMe:boolean
-    captcha?:string
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: string
 }
-export type MeParamsType = {
-    email:string
-    id:number
-    login:string
-}
+
 export const authAPI = {
-    login(data:LoginParamsType) {
-        return instance.post<ResponseType<{ userId: number }>>(`auth/login`, data);
-    },
-    me() {
-        return instance.get<ResponseType<MeParamsType>>(`auth/me`);
+    login(data: LoginParamsType) {
+        const promise = instance.post<ResponseType<{userId?: number}>>('auth/login', data);
+        return promise;
     },
     logout() {
-        return instance.delete<ResponseType>(`auth/login`);
+        const promise = instance.delete<ResponseType<{userId?: number}>>('auth/login');
+        return promise;
     },
+    me() {
+       const promise =  instance.get<ResponseType<{id: number; email: string; login: string}>>('auth/me');
+       return promise
+    }
 }
 
 
-// types
 export type TodolistType = {
     id: string
     title: string
@@ -76,14 +78,12 @@ export type ResponseType<D = {}> = {
     messages: Array<string>
     data: D
 }
-
 export enum TaskStatuses {
     New = 0,
     InProgress = 1,
     Completed = 2,
     Draft = 3
 }
-
 export enum TaskPriorities {
     Low = 0,
     Middle = 1,
@@ -91,7 +91,6 @@ export enum TaskPriorities {
     Urgently = 3,
     Later = 4
 }
-
 export type TaskType = {
     description: string
     title: string
