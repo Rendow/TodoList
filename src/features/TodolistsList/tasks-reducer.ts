@@ -1,10 +1,9 @@
-import {addTodolistAC, removeTodolistAC, setTodolistsAC} from './todolists-reducer'
+import {addTodolistAC, fetchTodolistsTC, removeTodolistTC} from './todolists-reducer'
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
-import {Dispatch} from 'redux'
 import {AppRootStateType} from '../../app/store'
 import {setAppStatusAC} from '../../app/app-reducer'
 import {handleServerAppError, handleServerNetworkError} from '../../utils/error-utils'
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 
 const initialState: TasksStateType = {}
 
@@ -75,39 +74,6 @@ export const updateTaskTC = createAsyncThunk('tasks/updateTask', async (param:{t
 })
 
 
-// export const updateTaskTC_ = (taskId: string, model: UpdateDomainTaskModelType, todolistId: string) =>
-//     (dispatch: Dispatch, getState: () => AppRootStateType) => {
-//         const state = getState()
-//         const task = state.tasks[todolistId].find(t => t.id === taskId)
-//         if (!task) {
-//             //throw new Error("task not found in the state");
-//             console.warn('task not found in the state')
-//             return
-//         }
-//
-//         const apiModel: UpdateTaskModelType = {
-//             deadline: task.deadline,
-//             description: task.description,
-//             priority: task.priority,
-//             startDate: task.startDate,
-//             title: task.title,
-//             status: task.status,
-//             ...model
-//         }
-//
-//         todolistsAPI.updateTask(todolistId, taskId, apiModel)
-//             .then(res => {
-//                 if (res.data.resultCode === 0) {
-//                     const action = updateTaskAC({taskId, model, todolistId})
-//                     dispatch(action)
-//                 } else {
-//                     handleServerAppError(res.data, dispatch)
-//                 }
-//             })
-//             .catch((error) => {
-//                 handleServerNetworkError(error, dispatch)
-//             })
-//     }
 // кажется, что стейт меняется мутабельно - но это не так
 const slice = createSlice({
     name: 'tasks',
@@ -120,10 +86,10 @@ const slice = createSlice({
         builder.addCase(addTodolistAC, (state, action) => {
             state[action.payload.todolist.id] = [];
         });
-        builder.addCase(removeTodolistAC, (state, action) => {
+        builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
             delete state[action.payload.id];
         });
-        builder.addCase(setTodolistsAC, (state, action) => {
+        builder.addCase(fetchTodolistsTC.fulfilled, (state, action) => {
             action.payload.todolists.forEach((tl: any) => {
                 state[tl.id] = []
             })
