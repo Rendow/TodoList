@@ -1,4 +1,4 @@
-import {addTodolistAC, fetchTodolistsTC, removeTodolistTC} from './todolists-reducer'
+import {addTodolistTC, fetchTodolistsTC, removeTodolistTC} from './todolists-reducer'
 import {TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from '../../api/todolists-api'
 import {AppRootStateType} from '../../app/store'
 import {setAppStatusAC} from '../../app/app-reducer'
@@ -83,7 +83,7 @@ const slice = createSlice({
     // 'импорт' редюсеров из других редюсеров
     // блягодаря builder нет необходимости типизировать по новой
     extraReducers: (builder) => {
-        builder.addCase(addTodolistAC, (state, action) => {
+        builder.addCase(addTodolistTC.fulfilled, (state, action) => {
             state[action.payload.todolist.id] = [];
         });
         builder.addCase(removeTodolistTC.fulfilled, (state, action) => {
