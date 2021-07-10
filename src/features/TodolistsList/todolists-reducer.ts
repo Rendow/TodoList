@@ -12,11 +12,10 @@ export const fetchTodolistsTC = createAsyncThunk<{ todolists: TodolistType[] }>(
         dispatch(setAppStatusAC({status: 'succeeded'}))
         return {todolists: res.data}
     } catch (error) {
-        return  error
+        return error
     }
 })
-
-export const removeTodolistTC = createAsyncThunk('todolists/removeTodolist', async (todolistId:string, {dispatch, rejectWithValue}) => {
+export const removeTodolistTC = createAsyncThunk('todolists/removeTodolist', async (todolistId: string, {dispatch, rejectWithValue}) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     dispatch(changeTodolistEntityStatusAC({id: todolistId, status: 'loading'}))
 
@@ -24,8 +23,7 @@ export const removeTodolistTC = createAsyncThunk('todolists/removeTodolist', asy
     dispatch(setAppStatusAC({status: 'succeeded'}))
     return {id: todolistId}
 })
-
-export const addTodolistTC = createAsyncThunk('todolists/addTodolist', async (title:string, thunkAPI) => {
+export const addTodolistTC = createAsyncThunk('todolists/addTodolist', async (title: string, thunkAPI) => {
     thunkAPI.dispatch(setAppStatusAC({status: 'loading'}))
     try {
         const res = await todolistsAPI.createTodolist(title)
@@ -49,8 +47,11 @@ export const changeTodolistTitleTC = createAsyncThunk('todolists/changeTodolistT
     }
 })
 
+export const AsyncActions = {
+    fetchTodolistsTC,removeTodolistTC , addTodolistTC, changeTodolistTitleTC
+}
 
-const slice = createSlice({
+export const slice = createSlice({
     name: 'todolists',
     initialState: initialState,
     reducers: {
