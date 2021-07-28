@@ -16,8 +16,10 @@ import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {useDispatch, useSelector} from 'react-redux'
 import {initializeAppTC} from './app-reducer'
 import {Route} from 'react-router-dom'
-import {authSelectors, Login} from '../features/Login/'
-import {appSelectors} from "../features/Application";
+import {authActions, authSelectors, Login} from '../features/Auth/'
+import {appActions, appSelectors} from "../features/Application";
+import {logout} from "../features/Auth/auth-reducer";
+import { useActions } from '../utils/redux-utils'
 
 type PropsType = {
     demo?: boolean
@@ -28,16 +30,18 @@ function App({demo = false}: PropsType) {
     const status = useSelector(appSelectors.selectStatus)
     const isInitialized = useSelector(appSelectors.selectIsInitialized)
     const isLoggedIn = useSelector(authSelectors.selectIsLoggedIn)
-    const dispatch = useDispatch()
+
+    const {logout} = useActions(authActions)
+    const {initializeApp} = useActions(appActions)
 
     useEffect(() => {
         if (!demo) {
-            dispatch(initializeAppTC())
+           initializeApp()
         }
     }, [])
 
     const logoutHandler = useCallback(() => {
-        dispatch(logoutTC())
+         logout()
     }, [])
 
     if (!isInitialized) {

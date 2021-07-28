@@ -46,13 +46,13 @@ export const asyncActions = {
 }
 
 //замена authReducer от redux-toolkit
-const slice = createSlice({
+export const slice = createSlice({
     name: 'auth',
     initialState: initialState,
 
     //state тут - 'черновик' стейта, предоставленный immerjs.
     reducers: {
-        setIsLoggedInAC(state, action: PayloadAction<{ value: boolean }>) {
+        setIsLoggedIn(state, action: PayloadAction<{ value: boolean }>) {
             state.isLoggedIn = action.payload.value
         }
     },
