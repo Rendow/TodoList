@@ -1,12 +1,9 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {FieldErrorType, LoginParamsType} from "../../api/types";
-import {appActions} from "../Application";
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {authAPI} from "../../api/todolists-api";
+import { appActions } from '../CommonActions/App';
 
-const initialState = {
-    isLoggedIn: false
-}
 
 const {setAppStatus} = appActions
 
@@ -48,7 +45,7 @@ export const asyncActions = {
 //замена authReducer от redux-toolkit
 export const slice = createSlice({
     name: 'auth',
-    initialState: initialState,
+    initialState: {isLoggedIn: false},
 
     //state тут - 'черновик' стейта, предоставленный immerjs.
     reducers: {
@@ -67,8 +64,6 @@ export const slice = createSlice({
     }
 })
 
+
 export const authReducer = slice.reducer
-export const {setIsLoggedInAC} = slice.actions
-
-
-
+export const {setIsLoggedIn} = slice.actions

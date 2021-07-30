@@ -13,13 +13,11 @@ import {
 import {Menu} from '@material-ui/icons'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
-import {useDispatch, useSelector} from 'react-redux'
-import {initializeAppTC} from './app-reducer'
+import {useSelector} from 'react-redux'
 import {Route} from 'react-router-dom'
 import {authActions, authSelectors, Login} from '../features/Auth/'
 import {appActions, appSelectors} from "../features/Application";
-import {logout} from "../features/Auth/auth-reducer";
-import { useActions } from '../utils/redux-utils'
+import {useActions} from '../utils/redux-utils'
 
 type PropsType = {
     demo?: boolean
