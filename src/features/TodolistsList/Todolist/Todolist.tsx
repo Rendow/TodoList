@@ -92,7 +92,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
             {
                 tasksForTodolist.map(t => <Task key={t.id} task={t} todolistId={props.todolist.id}/>)
             }
-            {!tasksForTodolist.length && <div style={{padding: '10px', color: 'grey'}}>No task</div>}
+            {!tasksForTodolist.length && <div style={{padding: '10px', color: 'grey'}}>Create task</div>}
         </div>
         <div style={{paddingTop: '10px'}}>
             {renderFilterButton('all', 'default', 'All')}
