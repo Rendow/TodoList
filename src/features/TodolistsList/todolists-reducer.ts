@@ -5,6 +5,7 @@ import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../ut
 import {ThunkError} from "../../utils/types";
 import {appActions} from "../CommonActions/App";
 import {RequestStatusType} from "../Application";
+import {authActions} from "../Auth";
 
 
 const {setAppStatus} = appActions
@@ -94,12 +95,13 @@ export const slice = createSlice({
                 const index = state.findIndex(tl => tl.id === action.payload.id)
                 state[index].title = action.payload.title
             })
+            .addCase(authActions.logout.fulfilled, (state) => {
+               return state = []
+            })
     }
 })
 
 export const {changeTodolistFilter, changeTodolistEntityStatus} = slice.actions
-
-
 
 export type FilterValuesType = 'all' | 'active' | 'completed';
 export type TodolistDomainType = TodolistType & {

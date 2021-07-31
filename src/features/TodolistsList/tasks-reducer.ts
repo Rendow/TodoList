@@ -127,7 +127,9 @@ export const slice = createSlice({
                     tasks[index] = {...tasks[index], ...action.payload.model}
                 }
             })
-
+            .addCase(authActions.logout.fulfilled, (state) => {
+               return state = {}
+            })
     }
 })
 

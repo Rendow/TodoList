@@ -1,15 +1,6 @@
 import React, {useCallback, useEffect} from 'react'
 import './App.css'
-import {
-    AppBar,
-    Button,
-    CircularProgress,
-    Container,
-    IconButton,
-    LinearProgress,
-    Toolbar,
-    Typography
-} from '@material-ui/core'
+import {AppBar, Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar} from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {TodolistsList} from '../features/TodolistsList/TodolistsList'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
@@ -33,7 +24,7 @@ function App() {
         if (!isInitialized) {
            initializeApp()
         }
-        document.title='Todo List'
+        document.title='To-do list'
     }, [])
 
     const logoutHandler = useCallback(() => {
@@ -55,9 +46,6 @@ function App() {
                         <IconButton edge="start" color="inherit" aria-label="menu">
                             <Menu/>
                         </IconButton>
-                        <Typography variant="h6">
-                            News
-                        </Typography>
                         {isLoggedIn && <Button color="inherit" onClick={logoutHandler}>Log out</Button>}
                     </Toolbar>
                     {status === 'loading' && <LinearProgress/>}
