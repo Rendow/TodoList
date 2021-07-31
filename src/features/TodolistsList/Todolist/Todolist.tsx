@@ -77,16 +77,18 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
     }
 
     return <Paper style={{padding: '10px', position: 'relative'}}>
-        <IconButton
-            size={'small'}
-            onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}
-            style={{position: 'absolute', right: '5px', top: '5px'}}
-        >
-            <Delete fontSize={'small'}/>
-        </IconButton>
-        <h3>
-            <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
-        </h3>
+
+        <div style={{display:'flex', wordWrap: 'break-word'}}>
+            <h3 style={{width: '240px'}}>
+                <EditableSpan value={props.todolist.title} onChange={changeTodolistTitle}/>
+            </h3>
+            <IconButton
+                size={'medium'}
+                onClick={removeTodolist} disabled={props.todolist.entityStatus === 'loading'}
+            >
+                <Delete fontSize={'default'}/>
+            </IconButton>
+        </div>
         <AddItemForm addItem={addTaskCallback} disabled={props.todolist.entityStatus === 'loading'}/>
         <div>
             {
@@ -94,7 +96,7 @@ export const Todolist = React.memo(function ({demo = false, ...props}: PropsType
             }
             {!tasksForTodolist.length && <div style={{padding: '10px', color: 'grey'}}>Create task</div>}
         </div>
-        <div style={{paddingTop: '10px'}}>
+        <div>
             {renderFilterButton('all', 'default', 'All')}
             {renderFilterButton('active', 'primary', 'Active')}
             {renderFilterButton('completed', 'secondary', 'Completed')}
