@@ -24,20 +24,21 @@ export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
 
     const {fetchTodolistsTC, addTodolistTC} = useActions(todolistsActions)
 
-
     useEffect(() => {
         if (demo || !isLoggedIn) {
             return
         }
-        fetchTodolistsTC()
+        if (!todolists.length){
+            fetchTodolistsTC()
+        }
     }, [])
 
 
     const addTodolistCallback = useCallback(async (title: string, helper: AddItemFormSubmitHelperType) => {
-        let thunk = todolistsActions.addTodolistTC(title)
+        let thunk = addTodolistTC(title)
         const resultAction = await dispatch(thunk)
 
-        if (todolistsActions.addTodolistTC.rejected.match(resultAction)) {
+        if (addTodolistTC.rejected.match(resultAction)) {
             if (resultAction.payload?.errors?.length) {
                 const errorMessage = resultAction.payload?.errors[0]
                 helper.setError(errorMessage)

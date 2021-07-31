@@ -5,6 +5,7 @@ import {TaskPriorities, TaskStatuses, TaskType, UpdateTaskModelType} from "../..
 import {handleAsyncServerAppError, handleAsyncServerNetworkError} from "../../utils/error-utils";
 import {todolistsAPI} from "../../api/todolists-api";
 import {asyncActions as asyncTodolistsActions} from './todolists-reducer'
+import {authActions} from "../Auth";
 
 
 const initialState: TasksStateType = {}
@@ -105,27 +106,28 @@ export const slice = createSlice({
                 })
             })
 
-        //возвращенные из санок значения попадают в fulfilled/pending/reject - альтернатива экшн криейт
-        builder.addCase(fetchTasks.fulfilled, (state, action) => {
-            state[action.payload.todolistId] = action.payload.tasks
+            //возвращенные из санок значения попадают в fulfilled/pending/reject - альтернатива экшн криейт
+            .addCase(fetchTasks.fulfilled, (state, action) => {
+                state[action.payload.todolistId] = action.payload.tasks
             })
-        builder.addCase(removeTask.fulfilled, (state, action) => {
-            const tasks = state[action.payload.todolistId]
-            const index = tasks.findIndex(t => t.id === action.payload.taskId)
-            if (index > -1) {
-                tasks.splice(index, 1)
-            }
-        })
-        builder.addCase(addTask.fulfilled, (state, action) => {
-            state[action.payload.todoListId].unshift(action.payload)
-        })
-        builder.addCase(updateTask.fulfilled, (state, action) => {
-            const tasks = state[action.payload.todolistId]
-            const index = tasks.findIndex(t => t.id === action.payload.taskId)
-            if (index > -1) {
-                tasks[index] = {...tasks[index], ...action.payload.model}
-            }
-        })
+            .addCase(removeTask.fulfilled, (state, action) => {
+                const tasks = state[action.payload.todolistId]
+                const index = tasks.findIndex(t => t.id === action.payload.taskId)
+                if (index > -1) {
+                    tasks.splice(index, 1)
+                }
+            })
+            .addCase(addTask.fulfilled, (state, action) => {
+                state[action.payload.todoListId].unshift(action.payload)
+            })
+            .addCase(updateTask.fulfilled, (state, action) => {
+                const tasks = state[action.payload.todolistId]
+                const index = tasks.findIndex(t => t.id === action.payload.taskId)
+                if (index > -1) {
+                    tasks[index] = {...tasks[index], ...action.payload.model}
+                }
+            })
+
     }
 })
 

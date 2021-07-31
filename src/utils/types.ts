@@ -1,5 +1,6 @@
-import {store, rootReducer} from "../app/store";
+import {store} from "../app/store";
 import {FieldErrorType} from "../api/types";
+import {rootReducer} from "../app/reducer";
 
 export type AppDispatchType = typeof store.dispatch
 export type RootReducerType = typeof rootReducer
