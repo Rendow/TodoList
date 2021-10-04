@@ -40,7 +40,6 @@ function App() {
 
     return (
             <div className="App">
-                <ErrorSnackbar/>
                 <AppBar position="static">
                     <Toolbar>
                         <IconButton edge="start" color="inherit" aria-label="menu">
@@ -54,6 +53,7 @@ function App() {
                     <Route exact path={'/'} render={() => <TodolistsList demo={false}/>}/>
                     <Route path={'/login'} render={() => <Login/>}/>
                 </Container>
+                <ErrorSnackbar/>
             </div>
     )
 }

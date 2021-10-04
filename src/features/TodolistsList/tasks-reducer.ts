@@ -38,11 +38,11 @@ export const addTask = createAsyncThunk<TaskType, { title: string, todolistId: s
                 thunkAPI.dispatch(appActions.setAppStatus({status: 'succeeded'}))
                 return res.data.data.item
             } else {
-                handleAsyncServerAppError(res.data, thunkAPI, false)
+                handleAsyncServerAppError(res.data, thunkAPI)
                 return thunkAPI.rejectWithValue({errors: res.data.messages, fieldsErrors: res.data.fieldsErrors})
             }
         } catch (err) {
-            return handleAsyncServerNetworkError(err, thunkAPI, false)
+            return handleAsyncServerNetworkError(err, thunkAPI)
         }
     })
 export const updateTask = createAsyncThunk('tasks/updateTask', async (param: { taskId: string, model: UpdateDomainTaskModelType, todolistId: string },
