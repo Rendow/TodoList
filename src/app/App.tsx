@@ -2,7 +2,7 @@ import React, {useCallback, useEffect} from 'react'
 import './App.css'
 import {AppBar, Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar} from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
-import {TodolistsList} from '../features/TodolistsList/TodolistsList'
+import {TodolistsList} from '../features/TodolistsList'
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
 import {useSelector} from 'react-redux'
 import {Route} from 'react-router-dom'
@@ -41,7 +41,7 @@ function App() {
     return (
             <div className="App">
                 <AppBar position="static">
-                    <Toolbar>
+                    <Toolbar >
                         <IconButton edge="start" color="inherit" aria-label="menu">
                             <Menu/>
                         </IconButton>

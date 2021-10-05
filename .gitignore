@@ -25,3 +25,4 @@ yarn-error.log*
 /.idea
 ~$dolist.docx*
 Todolist.docx*
+/src/.idea/
