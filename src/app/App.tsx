@@ -1,5 +1,4 @@
 import React, {useCallback, useEffect} from 'react'
-import './App.css'
 import {AppBar, Button, CircularProgress, Container, IconButton, LinearProgress, Toolbar} from '@material-ui/core'
 import {Menu} from '@material-ui/icons'
 import {TodolistsList} from '../features/TodolistsList'
