@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.idea
 
 # testing
 /coverage
@@ -21,8 +22,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-/.idea
-~$dolist.docx*
-Todolist.docx*
-/src/.idea/
