@@ -26,36 +26,36 @@ export const setIsLoggedInAC = (value: boolean) => {
 
 // thunks
 
-export const loginTC = (data: LoginParamsType) => (dispatch: Dispatch<ActionType>) => {
-  dispatch(setAppStatusAC('loading'))
-  authAPI.login(data)
-    .then(response => {
-      if (response.data.resultCode === 0) {
-        dispatch(setIsLoggedInAC(true))
-        dispatch(setAppStatusAC('succeeded'))
-      } else {
-        handleServerAppError(response.data, dispatch)
-      }
-    })
-    .catch(error => {
-      handleNetworkAppError(error, dispatch)
-    })
+export const loginTC = (data: LoginParamsType) => async (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC('loading'))
+
+    const res = await authAPI.login(data)
+    try {
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedInAC(true))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (error) {
+        handleNetworkAppError(error as Error, dispatch)
+    }
 }
 
-export const logoutTC = () => (dispatch: Dispatch<ActionType>) => {
-  dispatch(setAppStatusAC('loading'))
-  authAPI.logout()
-    .then(response => {
-      if (response.data.resultCode === 0) {
-        dispatch(setIsLoggedInAC(false))
-        dispatch(setAppStatusAC('succeeded'))
-      } else {
-        handleServerAppError(response.data, dispatch)
-      }
-    })
-    .catch(error => {
-      handleNetworkAppError(error, dispatch)
-    })
+export const logoutTC = () => async (dispatch: Dispatch<ActionType>) => {
+    dispatch(setAppStatusAC('loading'))
+
+    const res = await authAPI.logout()
+    try {
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedInAC(false))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (error) {
+        handleNetworkAppError(error as Error, dispatch)
+    }
 }
 
 

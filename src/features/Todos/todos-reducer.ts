@@ -52,55 +52,55 @@ export const changeTodoEntityStatusAC = (todoId: string, status: RequestStatusTy
 
 // thunks
 
-export const fetchTodosTC = () => (dispatch: Dispatch<ActionType>) => {
+export const fetchTodosTC = () => async (dispatch: Dispatch<ActionType>) => {
   dispatch(setAppStatusAC('loading'))
-  todoAPI.getTodos()
-    .then((res) => {
+  const res = await todoAPI.getTodos()
+    try{
       dispatch(setTodosAC(res.data))
-    })
-    .catch((error) => {
-      handleNetworkAppError(error, dispatch)
-    })
+    }
+    catch(error){
+      handleNetworkAppError(error as Error, dispatch)
+    }
 }
 
-export const deleteTodoTC = (todoId: string) => (dispatch: Dispatch<ActionType>) => {
+export const deleteTodoTC = (todoId: string) => async (dispatch: Dispatch<ActionType>) => {
   dispatch(setAppStatusAC('loading'))
   dispatch(changeTodoEntityStatusAC(todoId, 'loading'))
-  todoAPI.deleteTodo(todoId)
-    .then((res) => {
-      dispatch(removeTodoAC(todoId))
-      dispatch(setAppStatusAC('succeeded'))
-    })
-    .catch((error) => {
-      handleNetworkAppError(error, dispatch)
-      dispatch(changeTodoEntityStatusAC(todoId, 'failed'))
-    })
+
+  await todoAPI.deleteTodo(todoId)
+  try {
+    dispatch(removeTodoAC(todoId))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (error) {
+    handleNetworkAppError(error as Error, dispatch)
+    dispatch(changeTodoEntityStatusAC(todoId, 'failed'))
+  }
 }
 
-export const addTodoTC = (title: string) => (dispatch: Dispatch<ActionType>) => {
+export const addTodoTC = (title: string) => async (dispatch: Dispatch<ActionType>) => {
   dispatch(setAppStatusAC('loading'))
-  todoAPI.createTodo(title)
-    .then((res) => {
+
+  const res = await todoAPI.createTodo(title)
+    try {
       dispatch(addTodoAC(res.data.data.item))
       dispatch(setAppStatusAC('succeeded'))
-    })
-    .catch((error) => {
-      console.log(error)
-      handleNetworkAppError(error, dispatch)
-    })
+    }
+    catch(error) {
+      handleNetworkAppError(error as Error, dispatch)
+    }
 }
 
 
-export const changeTodoTitleTC = (todoId: string, title: string) => (dispatch: Dispatch<ActionType>) => {
+export const changeTodoTitleTC = (todoId: string, title: string) => async (dispatch: Dispatch<ActionType>) => {
   dispatch(setAppStatusAC('loading'))
-  todoAPI.updateTodo(todoId, title)
-      .then(() => {
-        dispatch(changeTodoTitleAC(todoId, title))
-        dispatch(setAppStatusAC('succeeded'))
-      })
-      .catch((error) => {
-        handleNetworkAppError(error, dispatch)
-      })
+
+  await todoAPI.updateTodo(todoId, title)
+  try {
+    dispatch(changeTodoTitleAC(todoId, title))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (error) {
+    handleNetworkAppError(error as Error, dispatch)
+  }
 }
 
 // types

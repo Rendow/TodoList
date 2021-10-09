@@ -61,52 +61,53 @@ export const setTasksAC = (tasks: Array<TaskType>, todoId: string) => {
 
 // thunks
 
-export const fetchTasksTC = (todoId: string) => (dispatch: Dispatch<ActionType>) => {
-  todoAPI.getTasks(todoId)
-    .then((res) => {
+export const fetchTasksTC = (todoId: string) => async (dispatch: Dispatch<ActionType>) => {
+  const res = await todoAPI.getTasks(todoId)
+  try {
       dispatch(setTasksAC(res.data.items, todoId))
       dispatch(setAppStatusAC('succeeded'))
-    })
-    .catch((error) => {
-      handleNetworkAppError(error, dispatch)
-    })
+    }
+    catch(error) {
+      handleNetworkAppError(error as Error, dispatch)
+    }
 }
 
-export const deleteTasksTC = (todoId: string, taskId: string) => (dispatch: Dispatch<ActionType>) => {
+export const deleteTasksTC = (todoId: string, taskId: string) => async (dispatch: Dispatch<ActionType>) => {
   dispatch(setAppStatusAC('loading'))
 
-  todoAPI.deleteTask(todoId, taskId)
-    .then((res) => {
+  const res = await todoAPI.deleteTask(todoId, taskId)
+  try {
       if (res.data.resultCode === 0) {
         dispatch(removeTaskAC(taskId, todoId))
         dispatch(setAppStatusAC('succeeded'))
       } else {
         handleServerAppError(res.data, dispatch)
       }
-    })
-    .catch((error) => {
-      handleNetworkAppError(error, dispatch)
-    })
+    }
+    catch(error) {
+      handleNetworkAppError(error as Error, dispatch)
+    }
 }
 
-export const addTaskTC = (title: string, todoId: string) => (dispatch: Dispatch<ActionType>) => {
+
+export const addTaskTC = (title: string, todolistId: string) => async (dispatch: Dispatch<ActionType | SetAppErrorActionType | SetAppStatusActionType>) => {
   dispatch(setAppStatusAC('loading'))
-  todoAPI.createTask(todoId, title)
-    .then((res) => {
-      if (res.data.resultCode === 0) {
-        dispatch(addTaskAC(res.data.data.item))
-        dispatch(setAppStatusAC('succeeded'))
-      } else {
-        handleServerAppError(res.data, dispatch)
-      }
-    })
-    .catch((error) => {
-      handleNetworkAppError(error, dispatch)
-    })
+  const res = await todoAPI.createTask(todolistId, title)
+  try {
+    if (res.data.resultCode === 0) {
+      const task = res.data.data.item
+      const action = addTaskAC(task)
+      dispatch(action)
+      dispatch(setAppStatusAC('succeeded'))
+    } else {
+      handleServerAppError(res.data, dispatch);
+    }
+  } catch (error) {
+    handleNetworkAppError(error as Error, dispatch)
+  }
 }
-
 export const updateTaskTC = (todoId: string, taskId: string, domainModel: UpdateDomainTaskModelType) => {
-  return (dispatch: Dispatch<ActionType>, getState: () => AppRootStateType) => {
+  return async (dispatch: Dispatch<ActionType>, getState: () => AppRootStateType) => {
 
     const state = getState()
     const task = state.tasks[todoId].find(task => task.id === taskId)
@@ -126,18 +127,17 @@ export const updateTaskTC = (todoId: string, taskId: string, domainModel: Update
     }
 
     dispatch(setAppStatusAC('loading'))
-    todoAPI.updateTask(todoId, taskId, apiModel)
-      .then((res) => {
-        if (res.data.resultCode === 0) {
-          dispatch(updateTaskAC(taskId, todoId, domainModel))
-          dispatch(setAppStatusAC('succeeded'))
-        } else {
-          handleServerAppError(res.data, dispatch)
-        }
-      })
-      .catch((error) => {
-        handleNetworkAppError(error, dispatch)
-      })
+    const res = await todoAPI.updateTask(todoId, taskId, apiModel)
+    try {
+      if (res.data.resultCode === 0) {
+        dispatch(updateTaskAC(taskId, todoId, domainModel))
+        dispatch(setAppStatusAC('succeeded'))
+      } else {
+        handleServerAppError(res.data, dispatch)
+      }
+    } catch (error) {
+      handleNetworkAppError(error as Error, dispatch)
+    }
   }
 }
 

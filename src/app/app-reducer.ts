@@ -25,20 +25,21 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
   }
 }
 
+// actions
 export const setAppErrorAC = (error: string | null) => ({type: 'APP/SET-ERROR', error} as const)
 export const setAppStatusAC = (status: RequestStatusType) => ({type: 'APP/SET-STATUS', status} as const)
 export const setAppInitAC = (value: boolean) => ({type: 'APP/SET-INIT', value} as const)
 
-export const initAppTC = () => (dispatch: Dispatch) => {
-  authAPI.me()
-    .then(res => {
-      if (res.data.resultCode === 0) {
-        dispatch(setIsLoggedInAC(true))
-      }
-      dispatch(setAppInitAC(true))
-    })
+// thunk
+export const initAppTC = () => async (dispatch: Dispatch) => {
+  const res = await authAPI.me()
+  if (res.data.resultCode === 0) {
+    dispatch(setIsLoggedInAC(true))
+  }
+  dispatch(setAppInitAC(true))
 }
 
+// types
 export type SetAppErrorActionType = ReturnType<typeof setAppErrorAC>
 export type SetAppStatusActionType = ReturnType<typeof setAppStatusAC>
 
